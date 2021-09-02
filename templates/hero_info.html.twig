@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game Dashboard{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('game') }}
+    {{ encore_entry_link_tags('hero_info') }}
+{% endblock %}
+{% block javascripts %}
+{#    <script>window.hero = {{ hero|json_encode|raw }}#}
+{#    console.log(window.hero)#}
+{#    </script>#}
+    {{ encore_entry_script_tags('game') }}
+{% endblock %}
+{% block body %}
+    <div class="game_wrapper">
+        {% include 'includes/sidenav.html.twig' %}
+
+        <div class="content">
+            <div class="hero">
+                <div class="info">
+                    <div>Hero name: {{ hero.info.name }}</div>
+                    <div>Sex: {{ hero.info.sex }}</div>
+                    <div>Class: {{ hero.info.class }}</div>
+                    <div>Level: {{ hero.info.level }}</div>
+                    <div class="progress_bar">
+                        <div class="progress_bar-label">{{ hero.info.XP }}/{{ hero.info.XPToNext }}</div>
+                        <div class="inner_bar" style="width:{{ hero.info.XP/hero.info.XPToNext*100 }}%"></div>
+                    </div>
+                </div>
+                <div class="half">
+                    {% for name,stat in hero.stats.main %}
+                        <div>
+                            <span class="stat__label">{{ name }}:</span>
+                            <span class="stat__value">{{ hero.getFullStatValue(name, 'main') }}</span>
+                            {% if hero.stats.free.stored>0 %}<a href={{ path('addStat',{stat:name}) }}>+</a>{% endif %}
+                            <div class="popup"></div>
+                        </div>
+                    {% endfor %}
+                    {% if hero.stats.free.stored >0 %}
+                        <div>
+                            <span class="stat__label">Available stats:</span>
+                            <span class="stat__value">{{ hero.stats.free.stored }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="half">
+                    <div>
+                        <span class="stat__label">Damage:</span>
+                        <span>{{ hero.fullStatValue('min','displayable_damage') }} - {{ hero.fullStatValue('max','displayable_damage') }}</span>
+                    </div>
+                    {% for name,stat in hero.stats.displayable_battle %}
+                        <div>
+                            <span class="stat__label">{{ name }}:</span>
+                            <span>{{ hero.fullStatValue(name,'displayable_battle') }}</span>
+                        </div>
+                    {% endfor %}
+                    {% for name,stat in hero.stats.displayable_extra %}
+                        <div>
+                            <span class="stat__label">{{ name }}:</span>
+                            <span>{{ hero.fullStatValue(name,'displayable_extra') }}%</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="gear">
+                <div>
+                    <div class="gear__item" >
+                        <span >Main hand:</span>
+                        {% if hero.gear.mainHand.id %}
+                            <div>
+                                <a href={{ path('wear_weapon',{ id:hero.gear.mainHand.id }) }}
+                                   style="color:{{ hero.gear.mainHand.color }}">
+                                    {{ hero.gear.mainHand.name }}
+                                </a>
+                                <div class="popup">
+                                    {{ hero.gear.mainHand.fullSpec|raw }}
+                                </div>
+                            </div>
+                        {% else %}
+                            Empty slot
+                        {% endif %}
+                        <div class="popup"></div>
+                    </div>
+                    <div class="gear__item">
+                        <span class="">Offhand:</span>
+                        {% if hero.gear.offHand.id %}
+                            <div>
+                                <a href={{ path('wear_weapon',{ id:hero.gear.offHand.id }) }}
+                                   style="color:{{ hero.gear.offHand.color }}">
+                                    {{ hero.gear.offHand.name }}
+                                </a>
+                                <div class="popup">
+                                    {{ hero.gear.offHand.fullSpec|raw }}
+                                </div>
+                            </div>
+                        {% else %}
+                            Empty slot
+                        {% endif %}
+                    </div>
+                </div>
+                {% for name,item in hero.gear.armors %}
+                    <div class="gear__item" >
+                        <span class="">{{ name }}</span>
+                        <div style="color: {{ item.color }}">
+                            <a
+                                {% if item.id  %}
+                                    href={{ path('wear_armor',{ id:item.id }) }}
+                                {% endif  %}
+                            >
+                                {{ item.name }}
+                            </a>
+                            <div class="popup">
+                                {{ item.fullSpec|raw }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <hr />
+                <div class="backpack">
+                    <div>{{ hero.info.backpackSize }} of 40</div>
+                    {% for item in hero.backpack %}
+                    <hr/>
+                        <div class="backpack-item" >
+                            <div style="color: {{ item.color }}">
+                            {% if item is instanceOfGear() %}
+                                {% if item is isWeapon() %}
+                                    <a href={{ path('wear_weapon',{id:item.id}) }}>{{ item.name }}</a>
+                                {% else %}
+                                    <a href={{ path('wear_armor',{id:item.id}) }}>{{ item.name }}</a>
+                                {% endif %}
+                            {% else %}
+                              {{ item.name }}
+                            {% endif %}
+{#                                <a href="{{ path('wear_armor',{id:item.id}) }}">remove</a>#}
+                            <div class="popup">
+                                {{ item.fullSpec|raw }}
+                            </div>
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

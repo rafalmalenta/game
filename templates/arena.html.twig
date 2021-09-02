@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arena{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('game') }}
+    {{ encore_entry_link_tags('arena') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('game') }}
+    {{ encore_entry_script_tags('arena') }}
+{% endblock %}
+{% block body %}
+<div class="game_wrapper">
+    {% include 'includes/sidenav.html.twig' %}
+    <div class="content">
+        <div>
+            <div id="arena"></div>
+        </div>
+    </div>
+</div>
+<script>
+    Window.availableEnemies = {{ availableEnemies|json_encode|raw }}
+    Window.availableModifiers = {{ availableModifiers|json_encode|raw }}
+</script>
+{% endblock %}

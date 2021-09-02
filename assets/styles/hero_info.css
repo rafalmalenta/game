@@ -1,0 +1,101 @@
+.progress_bar{
+    position: relative;
+    height: 1.1em;
+    margin-top: 3px;
+    width: 100%;
+    border:1px solid black;
+    box-sizing: border-box;
+}
+.hero a{
+    color: black;
+    text-align: center;
+    display: inline-block;
+    width: 34px;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 3px;
+    background: green;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.progress_bar-label{
+    height: 1.0em;
+    width: 100%;
+}
+.progress_bar *{
+    position: absolute;
+}
+.inner_bar{
+    z-index: -2;
+    background: red;
+    height: 100%;
+}
+.gear, .hero{
+    box-sizing: border-box;
+    padding: 10px 10px 10px;
+    display: block;
+    float: left;
+    width: 50%;
+}
+.backpack{
+    text-align: center;
+}
+.info{
+    text-align: center;
+}
+.hero>div>span{
+    display: inline-block;
+    min-width: 40px;
+}
+.hero>div>span:first-child{
+
+    min-width: 150px;
+}
+.gear{
+    text-transform: capitalize;
+    color: #FFFFFF;
+    background: black;
+}
+.gear a{
+    text-decoration: none;
+    color: inherit;
+}
+.gear__item>span{
+    position: relative;
+}
+.gear__item>span:first-child{
+    display: inline-block;
+    min-width: 150px;
+}
+.gear__item{
+    margin-top: 15px ;
+}
+.gear__item >div{
+    display: inline-block;
+}
+.gear div>.popup{
+    display: none;
+    z-index: 11;
+}
+.gear a:hover +.popup{
+    text-align: center;
+    z-index: 11;
+    width: 300px;
+    background: rgb(31, 4, 4);
+    position: absolute;
+    display: block;
+    margin: 0 auto;
+}
+.half{
+    width: 50%;
+    display: block;
+    float: left;
+}
+.stat__label{
+    min-width: 180px;
+    display: inline-block;
+    text-transform: capitalize;
+}
+.stat__value{
+    min-width: 35px;
+    display: inline-block;
+}

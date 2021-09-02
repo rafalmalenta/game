@@ -1,0 +1,28 @@
+nav, ul, li {
+    font-size: 42px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    list-style: none;
+}
+nav a{
+    text-decoration: none;
+    color: white;
+    font-style: italic;
+}
+nav li {
+    border-bottom: 1px solid gray;
+    padding: 10px 0 10px 0;
+    background-image: linear-gradient(black, gray,black);
+}
+.dropdown > ul{
+    transition: all 1s ease;
+    max-height: 0px;
+    overflow: hidden;
+}
+.dropdown.open>ul{
+    overflow: hidden;
+    max-height: 11em;
+}

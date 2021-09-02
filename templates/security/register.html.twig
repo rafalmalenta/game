@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+{%  block stylesheets%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('loginForm') }}
+{% endblock %}
+{% block body %}
+
+   <form method="post">
+       {% for message in app.flashes('warning') %}
+           <div class="flash-warning">
+               {{ message }}
+           </div>
+       {% endfor %}
+       {% for message in app.flashes('notice') %}
+           <div class="flash-notice">
+               {{ message }}
+           </div>
+       {% endfor %}
+       <label for="email">Email used for login identification</label>
+       <input type="text" name="email"/>
+       <label for="username">Pick name</label>
+       <input type="text" name="username"/>
+       <label for="password1">Password</label>
+       <input type="password" name="password1"/>
+       <label for="password2">Confirm Password</label>
+       <input type="password" name="password2"/>
+       <button type="submit"  >Register account</button>
+   </form>
+{% endblock %}

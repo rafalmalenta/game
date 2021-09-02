@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game Dashboard{% endblock %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('game') }}
+ {% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('game') }}
+{% endblock %}
+{% block body %}
+    <div class="game_wrapper">
+        {% include 'includes/sidenav.html.twig' %}
+        <div class="content">
+            <h1>Hello {{ app.user.username }}</h1>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,13 @@
+form *{
+    text-align: center;
+    font-size: 22px;
+}
+form > div{
+    /*text-align: center;*/
+}
+select{
+    display: inline;
+}
+input[type='number']{
+    max-width: 60px;
+}

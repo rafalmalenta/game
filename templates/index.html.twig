@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block body %}
+<div class="game_wrapper">
+    {% if app.user %}
+    {% include 'includes/sidenav.html.twig' %}
+    {% endif %}
+    <div class="content">
+        <H1>Hello guest</H1>
+        <p>This is an attempt to create a browser MMORPG game.</p>
+    </div>
+</div>
+{% endblock %}
