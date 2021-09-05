@@ -92,8 +92,7 @@ class CreateHeroService
             $startingWeaponBase[] = $this->entityManager->getRepository(Gear::class)->findOneBy(['name' => 'Training Shield'])->getItems()[0];
         }
         else if($this->class == "Rogue") {
-            $startingWeaponBase[] = $this->entityManager->getRepository(Gear::class)->findOneBy(['name' => 'Training Dagger'])->getItems()[0];
-            $startingWeaponBase[] = $this->entityManager->getRepository(Gear::class)->findOneBy(['name' => 'Training Dagger'])->getItems()[0];
+            $startingWeaponBase[] = $this->entityManager->getRepository(Gear::class)->findOneBy(['name' => 'training dual daggers'])->getItems()[0];
         }
         else if($this->class == "Alchemist") {
             $startingWeaponBase[] = $this->entityManager->getRepository(Gear::class)->findOneBy(['name' => 'Training Alchemical Pouch'])->getItems()[0];
