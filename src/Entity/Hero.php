@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HeroRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -79,6 +81,22 @@ class Hero
      * @ORM\JoinColumn(nullable=false)
      */
     private $level;
+
+    /**
+     * @ORM\OneToMany(targetEntity=HeroCurrency::class, mappedBy="hero", orphanRemoval=true)
+     */
+    private $heroCurrencies;
+
+    /**
+     * @ORM\OneToMany(targetEntity=HeroItems::class, mappedBy="hero")
+     */
+    private $heroItems;
+
+    public function __construct()
+    {
+        $this->heroCurrencies = new ArrayCollection();
+        $this->heroItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -225,6 +243,66 @@ class Hero
     public function setLevel(?Level $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HeroCurrency[]
+     */
+    public function getHeroCurrencies(): Collection
+    {
+        return $this->heroCurrencies;
+    }
+
+    public function addHeroCurrency(HeroCurrency $heroCurrency): self
+    {
+        if (!$this->heroCurrencies->contains($heroCurrency)) {
+            $this->heroCurrencies[] = $heroCurrency;
+            $heroCurrency->setHero($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHeroCurrency(HeroCurrency $heroCurrency): self
+    {
+        if ($this->heroCurrencies->removeElement($heroCurrency)) {
+            // set the owning side to null (unless already changed)
+            if ($heroCurrency->getHero() === $this) {
+                $heroCurrency->setHero(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HeroItems[]
+     */
+    public function getHeroItems(): Collection
+    {
+        return $this->heroItems;
+    }
+
+    public function addHeroItem(HeroItems $heroItem): self
+    {
+        if (!$this->heroItems->contains($heroItem)) {
+            $this->heroItems[] = $heroItem;
+            $heroItem->setHero($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHeroItem(HeroItems $heroItem): self
+    {
+        if ($this->heroItems->removeElement($heroItem)) {
+            // set the owning side to null (unless already changed)
+            if ($heroItem->getHero() === $this) {
+                $heroItem->setHero(null);
+            }
+        }
 
         return $this;
     }

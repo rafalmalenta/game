@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Gear;
 use App\Entity\Item;
-use App\Entity\WearingPlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
