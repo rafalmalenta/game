@@ -6,6 +6,7 @@ use App\Repository\GearCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 
 /**
  * @ORM\Entity(repositoryClass=GearCategoryRepository::class)
@@ -30,9 +31,17 @@ class GearCategory
      */
     private $gears;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=GearType::class, inversedBy="gearCategories")
+     * @JoinTable(name="itemsTree__TypeInCategory")
+     */
+    private $types;
+
     public function __construct()
     {
         $this->gears = new ArrayCollection();
+        $this->gears = new ArrayCollection();
+        $this->types = new ArrayCollection();
     }
 
 
@@ -61,24 +70,48 @@ class GearCategory
         return $this->gears;
     }
 
-    public function addGear(Gear $gear): self
+    public function addGears(Gear $gears): self
     {
-        if (!$this->gears->contains($gear)) {
-            $this->gears[] = $gear;
-            $gear->setCategory($this);
+        if (!$this->gears->contains($gears)) {
+            $this->gears[] = $gears;
+            $gears->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeGear(Gear $gear): self
+    public function removeGears(Gear $gears): self
     {
-        if ($this->gears->removeElement($gear)) {
+        if ($this->gears->removeElement($gears)) {
             // set the owning side to null (unless already changed)
-            if ($gear->getCategory() === $this) {
-                $gear->setCategory(null);
+            if ($gears->getCategory() === $this) {
+                $gears->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GearType[]
+     */
+    public function getTypes(): Collection
+    {
+        return $this->types;
+    }
+
+    public function addType(GearType $type): self
+    {
+        if (!$this->types->contains($type)) {
+            $this->types[] = $type;
+        }
+
+        return $this;
+    }
+
+    public function removeType(GearType $type): self
+    {
+        $this->types->removeElement($type);
 
         return $this;
     }

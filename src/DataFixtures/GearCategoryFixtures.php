@@ -5,22 +5,47 @@ namespace App\DataFixtures;
 
 
 use App\Entity\GearCategory;
+use App\Entity\GearType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class GearCategoryFixtures extends Fixture
+class GearCategoryFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
         $categories = [
-            'light armor', 'medium armor', 'heavy armor', 'sword', 'shield', 'daggers', 'hand wraps'
+            "light armor"=>[
+                "head armor","body armor","hands armor","legs armor","feet armor"
+            ],
+            "medium armor"=>[
+                "head armor","body armor","hands armor","legs armor","feet armor"
+            ],
+            "heavy armor"=>[
+                "head armor","body armor","hands armor","legs armor","feet armor"
+            ],
+            "weapon"=>[
+                "dual daggers","sword","hand-to-hand","shield","alchemical pouch"
+            ]
         ];
 
-        foreach ($categories as $category){
+        foreach ($categories as $categoryName=>$types ) {
             $fixture = new GearCategory();
-            $fixture->setName($category);
-            $manager->persist($fixture);
+            $fixture->setName($categoryName);
+            foreach ($types as $type){
+                $typeEntity = $manager->getRepository(GearType::class)->findOneBy(["name"=>$type]);
+                $fixture->addType($typeEntity);
+                $manager->persist($fixture);
+            }
         }
+
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            GearTypeFixtures::class
+        ];
     }
 }

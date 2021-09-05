@@ -22,67 +22,143 @@ class Gear
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Armor::class, inversedBy="gears")
-     * @JoinTable (name="itemsTree__gearIsArmor")
+     * @ORM\Column(type="string", length=70)
      */
-    private $armor;
+    private $name;
+
 
     /**
-     * @ORM\ManyToMany(targetEntity=Weapon::class, inversedBy="gears")
-     * @JoinTable (name="itemsTree__gearIsWeapon")
+     * @ORM\ManyToOne(targetEntity=GearCategory::class, inversedBy="gears2")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $weapon;
+    private $category;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $minDmg;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $maxdmg;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $defence;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=GearType::class, inversedBy="gears")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Item::class, mappedBy="gear")
+     */
+    private $items;
 
     public function __construct()
     {
-        $this->armor = new ArrayCollection();
-        $this->weapon = new ArrayCollection();
+        $this->items = new ArrayCollection();
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCategory(): ?GearCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?GearCategory $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getMinDmg(): ?int
+    {
+        return $this->minDmg;
+    }
+
+    public function setMinDmg(int $minDmg): self
+    {
+        $this->minDmg = $minDmg;
+
+        return $this;
+    }
+
+    public function getMaxdmg(): ?int
+    {
+        return $this->maxdmg;
+    }
+
+    public function setMaxdmg(int $maxdmg): self
+    {
+        $this->maxdmg = $maxdmg;
+
+        return $this;
+    }
+
+    public function getDefence(): ?int
+    {
+        return $this->defence;
+    }
+
+    public function setDefence(?int $defence): self
+    {
+        $this->defence = $defence;
+
+        return $this;
+    }
+
+    public function getType(): ?GearType
+    {
+        return $this->type;
+    }
+
+    public function setType(?GearType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     /**
-     * @return Collection|Armor[]
+     * @return Collection|Item[]
      */
-    public function getArmor(): Collection
+    public function getItems(): Collection
     {
-        return $this->armor;
+        return $this->items;
     }
 
-    public function addArmor(Armor $isArmor): self
+    public function addItem(Item $item): self
     {
-        if (!$this->armor->contains($isArmor)) {
-            $this->armor[] = $isArmor;
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->addGear($this);
         }
 
         return $this;
     }
 
-    public function removeArmor(Armor $isArmor): self
+    public function removeItem(Item $item): self
     {
-        $this->armor->removeElement($isArmor);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Weapon[]
-     */
-    public function getWeapon(): Collection
-    {
-        return $this->weapon;
-    }
-
-    public function addWeapon(Weapon $isWeapon): self
-    {
-        if (!$this->weapon->contains($isWeapon)) {
-            $this->weapon[] = $isWeapon;
+        if ($this->items->removeElement($item)) {
+            $item->removeGear($this);
         }
-
-        return $this;
-    }
-
-    public function removeIsWeapon(Weapon $weapon): self
-    {
-        $this->weapon->removeElement($weapon);
 
         return $this;
     }

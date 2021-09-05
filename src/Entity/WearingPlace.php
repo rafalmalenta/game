@@ -26,27 +26,14 @@ class WearingPlace
     private $location;
 
     /**
-     * @ORM\OneToMany(targetEntity=Gear::class, mappedBy="wearingPlace", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=GearType::class, mappedBy="wearingPlace", orphanRemoval=true)
      */
-    private $gears;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Weapon::class, mappedBy="wearingPlace", orphanRemoval=true)
-     */
-    private $weapons;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Armor::class, mappedBy="wearingPlace", orphanRemoval=true)
-     */
-    private $armors;
+    private $gearTypes;
 
     public function __construct()
     {
-        $this->gears = new ArrayCollection();
-        $this->weapons = new ArrayCollection();
-        $this->armors = new ArrayCollection();
+        $this->gearTypes = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -66,92 +53,33 @@ class WearingPlace
     }
 
     /**
-     * @return Collection|Gear[]
+     * @return Collection|GearType[]
      */
-    public function getGears(): Collection
+    public function getGearTypes(): Collection
     {
-        return $this->gears;
+        return $this->gearTypes;
     }
 
-    public function addGear(Gear $gear): self
+    public function addGearType(GearType $gearType): self
     {
-        if (!$this->gears->contains($gear)) {
-            $this->gears[] = $gear;
-            $gear->setWearingPlace($this);
+        if (!$this->gearTypes->contains($gearType)) {
+            $this->gearTypes[] = $gearType;
+            $gearType->setWearingPlace($this);
         }
 
         return $this;
     }
 
-    public function removeGear(Gear $gear): self
+    public function removeGearType(GearType $gearType): self
     {
-        if ($this->gears->removeElement($gear)) {
+        if ($this->gearTypes->removeElement($gearType)) {
             // set the owning side to null (unless already changed)
-            if ($gear->getWearingPlace() === $this) {
-                $gear->setWearingPlace(null);
+            if ($gearType->getWearingPlace() === $this) {
+                $gearType->setWearingPlace(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Weapon[]
-     */
-    public function getWeapons(): Collection
-    {
-        return $this->weapons;
-    }
-
-    public function addWeapon(Weapon $weapon): self
-    {
-        if (!$this->weapons->contains($weapon)) {
-            $this->weapons[] = $weapon;
-            $weapon->setWearingPlace($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWeapon(Weapon $weapon): self
-    {
-        if ($this->weapons->removeElement($weapon)) {
-            // set the owning side to null (unless already changed)
-            if ($weapon->getWearingPlace() === $this) {
-                $weapon->setWearingPlace(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Armor[]
-     */
-    public function getArmors(): Collection
-    {
-        return $this->armors;
-    }
-
-    public function addArmor(Armor $armor): self
-    {
-        if (!$this->armors->contains($armor)) {
-            $this->armors[] = $armor;
-            $armor->setWearingPlace($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArmor(Armor $armor): self
-    {
-        if ($this->armors->removeElement($armor)) {
-            // set the owning side to null (unless already changed)
-            if ($armor->getWearingPlace() === $this) {
-                $armor->setWearingPlace(null);
-            }
-        }
-
-        return $this;
-    }
 }
